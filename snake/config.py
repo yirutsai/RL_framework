@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-def get_args():
+def get_snake_args():
     parser = ArgumentParser()
     parser.add_argument("--width", type = int, default=30)
     parser.add_argument("--height", type = int, default=30)

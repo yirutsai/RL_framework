@@ -4,7 +4,13 @@ import random
 import config
 from snake_game import SnakeGame
 from utils import *
+from gym import Env
 
+class SnakeGameEnv:
+    def __init__(self, args):
+        self.snake_args = config.get_snake_args()
+
+        pass
 def main():
     args = config.get_args()
 
@@ -18,7 +24,7 @@ def main():
     while(not snake_game.game_over):
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):
-                game_over = True
+                snake_game.game_over = True
             elif(event.type == pygame.KEYDOWN):
                 snake_game.action(event.key)
 
@@ -30,14 +36,17 @@ def main():
         for pos in snake_game.snake_pos:
             pygame.draw.rect(win, GREEN, [pos[0]*snake_game.block_size, pos[1]*snake_game.block_size , snake_game.block_size, snake_game.block_size])
         pygame.draw.rect(win, BLUE, [snake_game.snake_pos[0][0]*snake_game.block_size, snake_game.snake_pos[0][1]*snake_game.block_size, snake_game.block_size, snake_game.block_size])
-        pygame.draw.rect(win, RED, [snake_game.food_pos[0], snake_game.food_pos[1], snake_game.block_size, snake_game.block_size])
+        pygame.draw.rect(win, RED, [snake_game.food_pos[0]*snake_game.block_size, snake_game.food_pos[1]*snake_game.block_size, snake_game.block_size, snake_game.block_size])
 
+        score = font.render(f"Score: {snake_game.score}", True, BLACK)
+        win.blit(score, [0, 0])
         pygame.display.update()
         pygame.time.Clock().tick(snake_game.snake_speed)
 
+
     # 顯示遊戲結束畫面
     text = font.render("Game Over!", True, BLACK)
-    win.blit(text, [snake_game.width - text.get_width() // 2, snake_game.height - text.get_height() // 2])
+    win.blit(text, [(snake_game.width*snake_game.block_size - text.get_width()) // 2, (snake_game.height*snake_game.block_size - text.get_height()) // 2])
     pygame.display.update()
 
     pygame.quit()
